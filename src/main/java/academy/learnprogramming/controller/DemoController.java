@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Slf4j
@@ -24,17 +25,18 @@ public class DemoController {
 
     // == request methods ==
 
-    @GetMapping("/hello") //http://localhost:8080/todo-list/hello
+    @GetMapping("/hello") //http://localhost:8080/todo-list/hello?user=Bartek
     @ResponseBody //oznacza, że to co zwróci ta metoda ma być DOSŁOWNIE zwrócone do przeglądarki, czyli w tym przypadku będzi to słówko "hello", a nie widok (thymeleaf, jsp itp...) o nazwie "hello"
     public String hello() {
         return "hello";
     }
 
     @GetMapping("welcome") //http://localhost:8080/todo-list/welcome
-    public String welcome(Model model) { //ten parametr będzie utworzony przez dispatcher servlet
+    public String welcome(@RequestParam String user, @RequestParam int age, Model model) { //ten parametr będzie utworzony przez dispatcher servlet
 
-        String helloMessage = service.getHelloMessage("Bartek");
+        String helloMessage = service.getHelloMessage(user);
         model.addAttribute("helloMessage", helloMessage);
+        model.addAttribute("age", age);
 
         log.info("Oto model: {}", model);
         // prefix + name + suffix
