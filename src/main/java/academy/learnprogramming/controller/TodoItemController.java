@@ -40,10 +40,19 @@ public class TodoItemController {
         return ViewNames.ITEMS_LIST;
     }
 
-    @GetMapping(Mappings.ADD_ITEM) //http://localhost:8080/todo-list/items   strona, która wyświetli formularz z możliwością utworzenianowego TodoItem
-    public String addOrEditItem(Model model) {
-        TodoItem emptyToDoItem = new TodoItem("", "", LocalDate.now());
-        model.addAttribute(AttributeNames.TODO_ITEM, emptyToDoItem);
+    @GetMapping(Mappings.ADD_ITEM) //http://localhost:8080/todo-list/items   strona, która wyświetli formularz z możliwością utworzenia nowego TodoItem (jeśli nie przesłaliśmy parametru id) lub edycji istniejącego (jeśli przekazano id)
+    public String addOrEditItem(Model model, @RequestParam(required = false, defaultValue = "-1") int id) {
+
+        log.info("editing id = {}", id);
+
+        //próba pobrania
+        TodoItem item = service.getItem(id); // jeśli id nei będzie podane, to wyszukiwanie obiektu po id = -1 nie powiedzie się, metoda zwróci null
+
+        if (item == null) {
+            item = new TodoItem("", "", LocalDate.now()); //jeśli nie odnaleźliśmy w bazie danych, to znaczy, że trzeba dodać nowy
+        }
+
+        model.addAttribute(AttributeNames.TODO_ITEM, item);
         return ViewNames.ADD_ITEM;
     }
 
@@ -53,7 +62,11 @@ public class TodoItemController {
 
         log.info("todoItem from jsp form = {}", todoItem);
 
-        service.addItem(todoItem);
+        if (todoItem.getId() == 0) {
+            service.addItem(todoItem); //jeśli id obiktu, który przyszedł w requeście jest równe zero, to znaczy, że dodajemy nowy obiekt
+        } else {
+            service.updateItem(todoItem); //w przeciwnym razie updatujemy istniejący
+        }
 
         return "redirect:/" + Mappings.ITEMS; //redirect robimy do innego mappingu (innego url-a), a nie do nazwy metody endpointu lub innego pliku jsp!
     }
