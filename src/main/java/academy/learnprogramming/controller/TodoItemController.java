@@ -40,7 +40,17 @@ public class TodoItemController {
         return ViewNames.ITEMS_LIST;
     }
 
-    @GetMapping(Mappings.ADD_ITEM) //http://localhost:8080/todo-list/items   strona, która wyświetli formularz z możliwością utworzenia nowego TodoItem (jeśli nie przesłaliśmy parametru id) lub edycji istniejącego (jeśli przekazano id)
+    @GetMapping(Mappings.VIEW_ITEM) //http://localhost:8080/todo-list/viewItem
+    public String viewItem(@RequestParam int id, Model model) {
+
+        TodoItem item = service.getItem(id);
+
+        model.addAttribute(AttributeNames.TODO_ITEM, item);
+
+        return ViewNames.VIEW_ITEM;
+    }
+
+    @GetMapping(Mappings.ADD_ITEM) //http://localhost:8080/todo-list/addItem   strona, która wyświetli formularz z możliwością utworzenia nowego TodoItem (jeśli nie przesłaliśmy parametru id) lub edycji istniejącego (jeśli przekazano id)
     public String addOrEditItem(Model model, @RequestParam(required = false, defaultValue = "-1") int id) {
 
         log.info("editing id = {}", id);
