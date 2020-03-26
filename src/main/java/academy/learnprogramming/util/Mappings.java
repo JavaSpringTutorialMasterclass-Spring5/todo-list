@@ -4,6 +4,7 @@ public final class Mappings {
 
     // == constants ==
     public static final String ITEMS = "items";
+    public static final String ADD_ITEM = "addItem";
 
     // == constructor ==
     private Mappings() { //ta klasa nie będzie mogłą być extended

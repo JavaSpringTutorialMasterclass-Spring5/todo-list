@@ -1,0 +1,41 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="academy.learnprogramming.util.AttributeNames" %> <%-- dostęp do elementó z tej klasy!!! stąd weźmiemy słownik z nazwami obiektó do przekazania do zbudowania i do wysłąnia do endpointów --%>
+
+<html>
+<head>
+    <title>Add Items</title>
+</head>
+<body>
+
+    <div align="center">
+        <%-- <form:form method="POST" modelAttribute="todoItem">  ta nazwa w modelAttribute musi być taka sama jak nazwa przekazana w adnotacji @ModelAttribute w definicji endpointu --%>
+        <form:form method="POST" modelAttribute="${AttributeNames.TODO_ITEM}"> <%-- ta nazwa w modelAttribute musi być taka sama jak nazwa przekazana w adnotacji @ModelAttribute w definicji endpointu --%>
+                <table>
+                    <tr>
+                        <td><label>ID</label></td>
+                        <td>
+                            <form:input path="id" disabled="true" />  <!-- nazwa przekazana w path musi być taka sama jak nazwa pola w klasie TodoItem -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Title</label></td>
+                        <td><form:input path="title"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>Deadline</label></td>
+                        <td><form:input path="deadline"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>Details</label></td>
+                        <td><form:textarea path="details"/></td>
+                    </tr>
+                    <tr>
+                        <td><input type="submit" value="Submit"/></td>
+                    </tr>
+                </table>
+        </form:form>
+    </div>
+
+</body>
+</html>
