@@ -10,10 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -59,5 +56,15 @@ public class TodoItemController {
         service.addItem(todoItem);
 
         return "redirect:/" + Mappings.ITEMS; //redirect robimy do innego mappingu (innego url-a), a nie do nazwy metody endpointu lub innego pliku jsp!
+    }
+
+    @GetMapping(Mappings.DELETE_ITEM)
+    public String deleteItem(@RequestParam int id) {
+
+        log.info("Deleting item with id = {}", id);
+
+        service.removeItem(id);
+
+        return "redirect:/" + Mappings.ITEMS;
     }
 }
